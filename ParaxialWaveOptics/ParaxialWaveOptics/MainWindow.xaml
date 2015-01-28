@@ -1,0 +1,76 @@
+﻿<Window x:Class="ParaxialWaveOptics.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Paraxial-wave optics calc" Height="600" Width="900"
+        SizeChanged="Callback_WindowResized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="240"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Canvas Name="drawCanvas"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="240"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="4" HorizontalAlignment="Center">
+                    <Label Content="Ray"/>
+                    <TextBox Name="Text_RayCount" Text="{Binding rayCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" TextChanged="Callback_ParameterChanged"/>
+                    <Label Content="Wavefront"/>
+                    <TextBox Name="Text_WaveCount" Text="{Binding waveCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" TextChanged="Callback_ParameterChanged"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" Margin="4">
+                    <Label Content="Draw Range(cm)"/>
+                    <TextBox Name="Text_MinDistance" Text="{Binding minDistanceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" TextChanged="Callback_ParameterChanged"/>
+                    <Label Content="～"/>
+                    <TextBox Name="Text_MaxDistance" Text="{Binding maxDistanceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" TextChanged="Callback_ParameterChanged"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" Margin="4">
+                    <Label Content="Draw Height(inch)"/>
+                    <TextBox Name="Text_DrawHeight" Text="{Binding drawHeightString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" TextChanged="Callback_ParameterChanged"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" Margin="4">
+                    <Label Content="Abb(mm): w"/>
+                    <Label Name="Label_AbberationWidth" Content="{Binding abberationWidthString, Mode=TwoWay}"/>
+                    <Label Content=" h"/>
+                    <Label Name="Label_AbberationHeight" Content="{Binding abberationHeightString,Mode=TwoWay}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="4">
+                    <Button Content="Repaint" Click="Callback_RepaintButton" Width="50"/>
+                    <CheckBox Name="CheckBox_CalcMethod" Content="Calc Abb" Margin="30,0,0,0" Click="Callback_RepaintButton"/>
+                </StackPanel>
+            </StackPanel>
+            <TabControl Grid.Column="1" Margin="5">
+                <TabItem Header="Lens">
+                    <DataGrid Grid.Column="1" Name="LensList" AutoGenerateColumns="False" Margin="10" ItemsSource="{Binding LensData}" CellEditEnding="Callback_DataChanged" TargetUpdated="Callback_Update" ContextMenu="{x:Null}" MouseRightButtonDown="Callback_Optmize">
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Binding="{Binding isEnabled,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" Header=""/>
+                            <DataGridTextColumn Binding="{Binding distance,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Position(cm)"/>
+                            <DataGridTextColumn Binding="{Binding curvature,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Curvature(cm)"/>
+                            <DataGridTextColumn Binding="{Binding diameter,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Diameter(inch)"/>
+                            <DataGridTextColumn Binding="{Binding thickness,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Thickness(mm)"/>
+                            <DataGridTextColumn Binding="{Binding refractiveIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="RefractiveIndex"/>
+                            <DataGridCheckBoxColumn Binding="{Binding isCurvatureRight,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" Header="IsCurvatureRight" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Origin">
+                    <DataGrid Grid.Column="1" Name="OriginList" AutoGenerateColumns="False" Margin="10" ItemsSource="{Binding LensData}" CellEditEnding="Callback_DataChanged" TargetUpdated="Callback_Update" ContextMenu="{x:Null}" MouseRightButtonDown="Callback_Optmize">
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Binding="{Binding isEnabled,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" Header=""/>
+                            <DataGridTextColumn Binding="{Binding position,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Position(cm)"/>
+                            <DataGridTextColumn Binding="{Binding height,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Height(mm)"/>
+                            <DataGridTextColumn Binding="{Binding divergence,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Divergence(rad)"/>
+                            <DataGridTextColumn Binding="{Binding wavelength,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Wavelength(nm)"/>
+                            <DataGridTextColumn Binding="{Binding color,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Color"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>
