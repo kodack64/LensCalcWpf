@@ -1,2 +1,5 @@
 # LensCalcWpf
-paraxial wave optics
+
+近軸光学の範囲でレンズの収差を計算して自動で最適化する
+
+イメージング系のレンズ設計用
